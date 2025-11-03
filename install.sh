@@ -24,7 +24,7 @@ show_greeting() {
 # ============================================================
 # 🎯 Configuration
 # ============================================================
-DOTFILES_DIR="/usr/local/share/dotfiles"
+DOTFILES_DIR="$HOME/.local/shared/dotfiles"
 BACKUP_DIR="$HOME/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
 REPO_URL="https://github.com/devalentineomonya/dotfiles.git"
 
@@ -64,20 +64,6 @@ print_step() {
     echo -e "\n${PURPLE}▶${NC} ${BOLD}$1${NC}"
 }
 
-spinner() {
-    local pid=$!
-    local delay=0.1
-    local spinstr='|/-\'
-    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
-        local temp=${spinstr#?}
-        printf " [%c]  " "$spinstr"
-        local spinstr=$temp${spinstr%"$temp"}
-        sleep $delay
-        printf "\b\b\b\b\b\b"
-    done
-    printf "    \b\b\b\b"
-}
-
 # ============================================================
 # 🔍 System Detection
 # ============================================================
@@ -104,9 +90,18 @@ detect_system() {
     elif [[ "$OSTYPE" == "darwin"* ]]; then
         SYSTEM="macos"
         PACKAGE_MANAGER="brew"
-    elif [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "msys" ]]; then
+    elif [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
         SYSTEM="windows"
-        PACKAGE_MANAGER="unknown"
+        # Detect Windows package manager
+        if command -v choco &> /dev/null; then
+            PACKAGE_MANAGER="choco"
+        elif command -v scoop &> /dev/null; then
+            PACKAGE_MANAGER="scoop"
+        elif command -v winget &> /dev/null; then
+            PACKAGE_MANAGER="winget"
+        else
+            PACKAGE_MANAGER="unknown"
+        fi
     else
         SYSTEM="unknown"
         PACKAGE_MANAGER="unknown"
@@ -119,7 +114,17 @@ detect_system() {
 # 🔐 Security Functions
 # ============================================================
 check_sudo() {
-    if [ "$EUID" -ne 0 ]; then
+    if [[ "$SYSTEM" == "windows" ]]; then
+        # On Windows, check if running as admin
+        net session > /dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            print_success "Running with administrator privileges"
+            return 0
+        else
+            print_warning "Not running as administrator (some installations may fail)"
+            return 1
+        fi
+    elif [ "$EUID" -ne 0 ]; then
         print_warning "Elevated privileges required"
         sudo -v
         if [ $? -eq 0 ]; then
@@ -130,6 +135,7 @@ check_sudo() {
             return 1
         fi
     fi
+    return 0
 }
 
 confirm_action() {
@@ -169,6 +175,15 @@ install_package() {
         brew)
             install_cmd="brew install $package"
             ;;
+        choco)
+            install_cmd="choco install $package -y"
+            ;;
+        scoop)
+            install_cmd="scoop install $package"
+            ;;
+        winget)
+            install_cmd="winget install $package"
+            ;;
         *)
             print_warning "Unknown package manager for $package"
             return 1
@@ -196,16 +211,20 @@ install_required_packages() {
     local base_packages="git curl wget"
     local recommended_packages="zsh fish neovim tmux"
     
+    # Windows-specific package names
+    if [[ "$SYSTEM" == "windows" ]]; then
+        base_packages="git curl wget"
+        recommended_packages=""
+    fi
+    
     for pkg in $base_packages; do
-        install_package "$pkg" &
+        install_package "$pkg"
     done
-    wait
     
     if confirm_action "Install recommended packages (zsh, fish, neovim, tmux)?"; then
         for pkg in $recommended_packages; do
-            install_package "$pkg" &
+            install_package "$pkg"
         done
-        wait
     fi
 }
 
@@ -222,6 +241,17 @@ backup_existing() {
         "$HOME/.config/nvim"
         "$HOME/.config/tmux"
         "$HOME/.config/zsh"
+        "$HOME/.config/fish"
+        "$HOME/.config/hypr"
+        "$HOME/.config/foot"
+        "$HOME/.config/btop"
+        "$HOME/.config/fastfetch"
+        "$HOME/.config/spicetify"
+        "$HOME/.config/caelestia"
+        "$HOME/.config/uwsm"
+        "$HOME/.config/starship.toml"
+        "$HOME/.config/code-flags.conf"
+        "$HOME/.config/monitors.xml"
     )
     
     for config in "${configs[@]}"; do
@@ -236,60 +266,122 @@ backup_existing() {
     print_success "Backups saved to $BACKUP_DIR"
 }
 
-clone_dotfiles() {
-    print_step "Cloning Dotfiles Repository"
+setup_dotfiles_repo() {
+    print_step "Setting Up Dotfiles Repository"
     
-    if [ -d "$DOTFILES_DIR" ]; then
-        if confirm_action "Dotfiles directory exists. Update instead?"; then
-            cd "$DOTFILES_DIR"
-            git pull origin main
-            return $?
-        else
-            print_error "Installation aborted"
-            exit 1
-        fi
-    else
-        sudo mkdir -p /usr/local/share
-        sudo git clone "$REPO_URL" "$DOTFILES_DIR"
-        if [ $? -eq 0 ]; then
-            print_success "Repository cloned successfully"
-            sudo chown -R $USER:$USER "$DOTFILES_DIR"
-            return 0
-        else
-            print_error "Failed to clone repository"
-            return 1
-        fi
+    # Check if we're already in a dotfiles directory
+    if [[ "$(pwd)" == *"dotfiles"* ]] && [ -f "install.sh" ]; then
+        DOTFILES_DIR="$(pwd)"
+        print_success "Using current directory as dotfiles: $DOTFILES_DIR"
+        return 0
     fi
+    
+    # Check if dotfiles exist in default location
+    if [ -d "$DOTFILES_DIR" ]; then
+        print_success "Dotfiles found at $DOTFILES_DIR"
+        return 0
+    fi
+    
+    # Ask user for dotfiles location
+    echo -e "${YELLOW}?${NC} Dotfiles directory not found. Where are your dotfiles?"
+    echo "1) Clone from GitHub"
+    echo "2) Use custom path"
+    echo "3) Exit"
+    
+    read -r choice
+    case $choice in
+        1)
+            print_status "Cloning from $REPO_URL..."
+            if git clone "$REPO_URL" "$DOTFILES_DIR"; then
+                print_success "Repository cloned successfully"
+                return 0
+            else
+                print_error "Failed to clone repository"
+                return 1
+            fi
+            ;;
+        2)
+            echo -e "${YELLOW}?${NC} Enter the path to your dotfiles:"
+            read -r custom_path
+            if [ -d "$custom_path" ]; then
+                DOTFILES_DIR="$custom_path"
+                print_success "Using custom dotfiles path: $DOTFILES_DIR"
+                return 0
+            else
+                print_error "Directory not found: $custom_path"
+                return 1
+            fi
+            ;;
+        3)
+            print_error "Installation cancelled"
+            exit 1
+            ;;
+        *)
+            print_error "Invalid choice"
+            return 1
+            ;;
+    esac
 }
 
 create_symlinks() {
     print_step "Creating Configuration Symlinks"
     
-    local config_dir="$DOTFILES_DIR/.config"
+    # Check if we're using the correct structure
+    if [ -d "$DOTFILES_DIR/configurations" ]; then
+        local config_dir="$DOTFILES_DIR/configurations"
+    elif [ -d "$DOTFILES_DIR/.config" ]; then
+        local config_dir="$DOTFILES_DIR/.config"
+    else
+        local config_dir="$DOTFILES_DIR"
+    fi
     
     if [ ! -d "$config_dir" ]; then
-        print_error "Config directory not found"
+        print_error "Config directory not found in $config_dir"
         return 1
     fi
     
     mkdir -p "$HOME/.config"
     
-    for item in "$config_dir"/*; do
-        local name=$(basename "$item")
-        local target="$HOME/.config/$name"
+    # List of config directories to link
+    local configs=("bash" "fish" "zsh" "nvim" "tmux" "hypr" "foot" "btop" 
+                   "fastfetch" "spicetify" "caelestia" "uwsm" "starship" "vscode")
+    
+    for config in "${configs[@]}"; do
+        local source_path="$config_dir/$config"
+        local target_path="$HOME/.config/$config"
         
-        if [ -e "$target" ]; then
-            if [ ! -L "$target" ]; then
-                print_warning "Backing up existing $name"
-                mv "$target" "$target.backup.$(date +%s)"
+        if [ -e "$source_path" ]; then
+            if [ -e "$target_path" ] && [ ! -L "$target_path" ]; then
+                print_warning "Backing up existing $config"
+                mv "$target_path" "$target_path.backup.$(date +%s)"
             fi
+            
+            print_status "Linking $config"
+            # Remove existing symlink or directory
+            rm -rf "$target_path"
+            ln -sf "$source_path" "$target_path" && \
+            print_success "Linked $config" || \
+            print_error "Failed to link $config"
+        else
+            print_warning "Config not found: $config"
         fi
-        
-        print_status "Linking $name"
-        ln -sf "$item" "$target" && \
-        print_success "Linked $name" || \
-        print_error "Failed to link $name"
     done
+    
+    # Handle single files
+    if [ -f "$config_dir/code-flags.conf" ]; then
+        ln -sf "$config_dir/code-flags.conf" "$HOME/.config/code-flags.conf"
+    fi
+    if [ -f "$config_dir/monitors.xml" ]; then
+        ln -sf "$config_dir/monitors.xml" "$HOME/.config/monitors.xml"
+    fi
+    
+    # Handle shell config files
+    if [ -f "$config_dir/bash/.bashrc" ]; then
+        ln -sf "$config_dir/bash/.bashrc" "$HOME/.bashrc"
+    fi
+    if [ -f "$config_dir/zsh/.zshrc" ]; then
+        ln -sf "$config_dir/zsh/.zshrc" "$HOME/.zshrc"
+    fi
     
     print_success "All symlinks created"
 }
@@ -302,42 +394,79 @@ setup_shell() {
     
     if command -v zsh &> /dev/null && [ -d "$HOME/.config/zsh" ]; then
         if confirm_action "Set ZSH as default shell?"; then
-            chsh -s $(which zsh)
-            print_success "ZSH set as default shell"
+            if [[ "$SYSTEM" != "windows" ]]; then
+                chsh -s $(which zsh)
+                print_success "ZSH set as default shell"
+            else
+                print_warning "On Windows, you may need to set ZSH as default shell manually"
+            fi
         fi
     fi
     
     if command -v fish &> /dev/null && [ -d "$HOME/.config/fish" ]; then
-        if confirm_action "Set up Fish shell?"; then
-            print_success "Fish configuration linked"
-        fi
+        print_success "Fish configuration linked"
     fi
 }
 
 setup_vscode() {
-    if command -v code &> /dev/null; then
+    if command -v code &> /dev/null || command -v code-insiders &> /dev/null; then
         print_step "Setting Up VSCode"
         
-        local vscode_config="$HOME/.config/Code/User"
+        # Determine VSCode config directory
+        if [[ "$SYSTEM" == "windows" ]]; then
+            local vscode_config="$APPDATA/Code/User"
+        else
+            local vscode_config="$HOME/.config/Code/User"
+        fi
+        
         mkdir -p "$vscode_config"
         
-        # Link settings
-        ln -sf "$HOME/.config/vscode/settings.json" "$vscode_config/settings.json" 2>/dev/null
-        ln -sf "$HOME/.config/vscode/keybindings.json" "$vscode_config/keybindings.json" 2>/dev/null
-        ln -sf "$HOME/.config/vscode/snippets" "$vscode_config/snippets" 2>/dev/null
+        # Link settings if they exist in our dotfiles
+        if [ -f "$HOME/.config/vscode/settings.json" ]; then
+            ln -sf "$HOME/.config/vscode/settings.json" "$vscode_config/settings.json"
+        fi
+        if [ -f "$HOME/.config/vscode/keybindings.json" ]; then
+            ln -sf "$HOME/.config/vscode/keybindings.json" "$vscode_config/keybindings.json"
+        fi
+        if [ -d "$HOME/.config/vscode/snippets" ]; then
+            ln -sf "$HOME/.config/vscode/snippets" "$vscode_config/snippets"
+        fi
         
         # Install extensions if extensions file exists
         if [ -f "$HOME/.config/vscode/extensions.txt" ]; then
             if confirm_action "Install VSCode extensions from list?"; then
+                local code_cmd="code"
+                if command -v code-insiders &> /dev/null; then
+                    code_cmd="code-insiders"
+                fi
+                
                 while IFS= read -r extension; do
                     if [ -n "$extension" ] && [[ ! "$extension" =~ ^# ]]; then
-                        code --install-extension "$extension" --force
+                        $code_cmd --install-extension "$extension" --force
                     fi
                 done < "$HOME/.config/vscode/extensions.txt"
             fi
         fi
         
         print_success "VSCode configured"
+    fi
+}
+
+setup_windows_specific() {
+    if [[ "$SYSTEM" == "windows" ]]; then
+        print_step "Setting Up Windows Specific Configurations"
+        
+        # Install Windows terminal if available
+        if command -v wt &> /dev/null; then
+            print_status "Windows Terminal detected"
+        fi
+        
+        # Setup WSL integration if WSL is available
+        if command -v wsl &> /dev/null; then
+            if confirm_action "Set up WSL integration for dotfiles?"; then
+                print_status "WSL integration can be configured manually"
+            fi
+        fi
     fi
 }
 
@@ -353,20 +482,24 @@ main() {
     # System detection
     detect_system
     
-    # Security check
-    check_sudo || {
-        print_error "Sudo access required for installation"
+    # Security check (skip on Windows if not admin)
+    if [[ "$SYSTEM" != "windows" ]]; then
+        check_sudo || {
+            print_error "Sudo access required for installation"
+            exit 1
+        }
+    else
+        check_sudo
+    fi
+    
+    # Setup dotfiles repository
+    setup_dotfiles_repo || {
+        print_error "Failed to setup dotfiles repository"
         exit 1
     }
     
     # Backup existing configs
     backup_existing
-    
-    # Clone repository
-    clone_dotfiles || {
-        print_error "Failed to clone dotfiles repository"
-        exit 1
-    }
     
     # Install packages
     install_required_packages
@@ -377,14 +510,23 @@ main() {
     # Additional setup
     setup_shell
     setup_vscode
+    setup_windows_specific
     
     # Final message
     echo -e "\n${GREEN}${BOLD}✨ Installation Complete!${NC}"
     echo -e "${CYAN}Your dotfiles have been successfully installed.${NC}"
     echo -e "${YELLOW}Backups saved to: $BACKUP_DIR${NC}"
     echo -e "\n${BOLD}Next steps:${NC}"
-    echo -e "  • Restart your terminal or run: ${GREEN}source ~/.zshrc${NC}"
-    echo -e "  • Check individual configs in ${GREEN}~/.config/${NC}"
+    
+    if [[ "$SYSTEM" == "windows" ]]; then
+        echo -e "  • Restart your terminal or PowerShell"
+        echo -e "  • Check individual configs in ${GREEN}~/.config/${NC}"
+        echo -e "  • Consider installing Windows Terminal from Microsoft Store"
+    else
+        echo -e "  • Restart your terminal or run: ${GREEN}source ~/.zshrc${NC}"
+        echo -e "  • Check individual configs in ${GREEN}~/.config/${NC}"
+    fi
+    
     echo -e "  • Customize settings to your preference"
     echo -e "\n${DIM}Happy coding! 🚀${NC}"
 }
@@ -393,11 +535,28 @@ main() {
 # 🎯 Script Entry Point
 # ============================================================
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    # Check if running with --manual flag
+    # Check if running with --help or -h
+    if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
+        echo -e "${BOLD}Dotfiles Installer${NC}"
+        echo "Usage: $0 [OPTIONS]"
+        echo ""
+        echo "Options:"
+        echo "  -h, --help     Show this help message"
+        echo "  --manual       Manual installation mode"
+        echo ""
+        echo "This script will:"
+        echo "  1. Detect your system and package manager"
+        echo "  2. Backup existing configurations"
+        echo "  3. Install required packages"
+        echo "  4. Create symlinks to dotfiles"
+        echo "  5. Setup shell environment and applications"
+        exit 0
+    fi
+    
     if [[ "$1" == "--manual" ]]; then
         echo -e "${YELLOW}Manual installation mode${NC}"
         echo "Clone repository manually:"
-        echo "  sudo git clone $REPO_URL $DOTFILES_DIR"
+        echo "  git clone $REPO_URL $DOTFILES_DIR"
         echo "Then create symlinks as needed."
         exit 0
     fi
