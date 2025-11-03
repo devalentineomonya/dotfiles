@@ -1,0 +1,36 @@
+{
+  "appearance": {
+    "transparency": {
+      "enabled": true,
+      "base": 0.85,
+      "layers": 0.4
+    }
+  },
+  "bar": {
+    "status": {
+      "showAudio": true,
+      "showMicrophone": true
+    }
+  },
+  "launcher": {
+    "actionPrefix": ">",
+
+    "useFuzzy": {
+      "apps": true
+    }
+  },
+  "osd": {
+    "enableMicrophone": true
+  },
+  "vpn": {
+    "enabled": true,
+    "provider": [
+      {
+        "name": "wireguard",
+        "interface": "your-connection-name",
+        "displayName": "Wireguard (Your VPN)"
+      }
+    ]
+  }
+}
+

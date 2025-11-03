@@ -1,0 +1,14 @@
+require("lazy").setup({
+    { import = "plugins.wakatime" },
+    { import = "plugins.telescope" },
+    { import = "plugins.treesitter" },
+    { import = "plugins.theme" },
+    { import = "plugins.formatter" },
+    { import = "plugins.nvim-tree" },
+    { import = "plugins.bufferline" },
+    { import = "plugins.lualine" },
+    { import = "plugins.lsp" },
+    { import = "plugins.cmp" },
+    { import = "plugins.tiny-diagnostics" },
+    { "mg979/vim-visual-multi" },
+})
