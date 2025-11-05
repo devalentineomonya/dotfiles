@@ -1,8 +1,7 @@
-
 # version: 1.0.0
 
 add_newline = false
-continuation_prompt = "[▸▹ ](dimmed white)"
+continuation_prompt = "[ ▸▹ ](dimmed white)"
 
 format = """($nix_shell$container$fill$git_metrics\n)$cmd_duration\
 $hostname\
@@ -15,18 +14,16 @@ $sudo\
 $username\
 $character"""
 
-right_format = """
-$singularity\
+right_format = """$singularity\
 $kubernetes\
 $directory\
 $vcsh\
 $fossil_branch\
 $git_branch\
+$custom_branch_count\
 $git_commit\
 $git_state\
 $git_status\
-$hg_branch\
-$pijul_channel\
 $docker_context\
 $package\
 $c\
@@ -81,9 +78,10 @@ $gcloud\
 $openstack\
 $azure\
 $crystal\
-$custom\
+$tmux\
 $status\
 $os\
+$custom_tmux\
 $battery\
 $time"""
 
@@ -92,20 +90,19 @@ symbol = ' '
 
 [character]
 format = "$symbol "
-success_symbol = "[󰗠 ](bold italic bright-green)"
-error_symbol = "[󰅙 ](italic bright-red)"
-vimcmd_symbol = "[ ](italic dimmed green)"
-
+success_symbol = "[ 󰗠 ](bold italic bright-green)"
+error_symbol = "[ 󰅙 ](italic bright-red)"
+vimcmd_symbol = "[  ](italic dimmed green)"
 vimcmd_replace_one_symbol = "󰬲 "
 vimcmd_replace_symbol = "󰛔 "
 vimcmd_visual_symbol = "󰒉 "
 
 [env_var.VIMSHELL]
-format = "[$env_value]($style)"
+format = "[ $env_value]($style)"
 style = 'green italic'
 
 [sudo]
-format = "[$symbol]($style)"
+format = "[ $symbol]($style)"
 style = "bold italic bright-purple"
 symbol = "⋈┈"
 disabled = false
@@ -113,7 +110,7 @@ disabled = false
 [username]
 style_user = "bright-yellow bold italic"
 style_root = "purple bold italic"
-format = "[⭘ $user]($style) "
+format = "[ ⭘ $user]($style) "
 disabled = false
 show_always = false
 
@@ -130,12 +127,12 @@ repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($re
 
 [cmd_duration]
 min_time = 0
-format = "[◄ $duration ](italic white)"
+format = "[ ◄ $duration ](italic white)"
 
 [jobs]
-format = "[$symbol$number]($style) "
+format = "[ $symbol$number]($style) "
 style = "white"
-symbol = "[󰝨](blue italic)"
+symbol = "[ 󰝨](blue italic)"
 
 [localip]
 ssh_only = true
@@ -150,7 +147,7 @@ utc_time_offset = "local"
 style = "italic dimmed white"
 
 [battery]
-format = "[ $percentage $symbol]($style)"
+format = "[  $percentage $symbol]($style)"
 full_symbol = " "
 charging_symbol = " "
 discharging_symbol = " "
@@ -174,13 +171,31 @@ threshold = 100
 style = "italic dimmed green"
 
 [git_branch]
-format = "  [$branch]($style)[ ($total_branches 󰊤)]($count_style)"
+format = "  [$branch]($style)"
 symbol = ""
 style = "italic bright-blue"
 truncation_symbol = "󰅂"
 truncation_length = 20
 only_attached = true
 always_show_remote = true
+
+[git_state]
+rebase = "󰊢 REBASING"
+merge = "󰊢 MERGING"
+revert = "󰊢 REVERTING"
+cherry_pick = "󰊢 CHERRY-PICKING"
+bisect = "󰊢 BISECTING"
+am = "󰊢 APPLYING MAILBOX"
+am_or_rebase = "󰊢 AM/REBASE"
+style = "bold italic bright-yellow"
+format = "([$state( $progress_current/$progress_total)]($style)) "
+disabled = false
+
+[custom.branch_count]
+command = "git branch --all | grep -v '/HEAD' | wc -l | tr -d ' '"
+when = "git rev-parse --is-inside-work-tree >/dev/null 2>&1"
+format = "[ 󰊤 $output]($style)"
+style = "italic dimmed blue"
 
 [git_metrics]
 format = '([▴$added]($added_style))([▿$deleted]($deleted_style))'
@@ -191,146 +206,124 @@ disabled = false
 
 [git_status]
 style = "bold italic bright-blue"
-format = "([ $ahead_behind$staged$modified$untracked$renamed$deleted$conflicted$stashed ]($style))"
-conflicted = "[󰈸](italic bright-magenta)"
-
-ahead = "[│[${count}](bold white)│](italic green)"
-behind = "[│[${count}](bold white)│](italic red)"
-diverged = "[ ▴│[${ahead_count}](regular white)│▿│[${behind_count}](regular white)│](italic bright-magenta)"
-stashed = "[ ](italic white)"                 
-modified = "[ ](italic yellow)"                 
-staged = "[ ┤[$count](bold white)│](italic bright-cyan)" 
-renamed = "[ ](italic bright-blue)"            
-deleted = "[](italic red)"
+format = "([$ahead_behind$staged$modified$untracked$renamed$deleted$conflicted$stashed]($style))"
+conflicted = "[ 󰈸](italic bright-magenta)"
+ahead = "[ ${count}](italic green)"
+behind = "[ ${count}](italic red)"
+diverged = "[  ▴${ahead_count}▿${behind_count}](italic bright-magenta)"
+stashed = "[ ](italic white)"
+modified = "[ ](italic yellow)"
+staged = "[  ${count}](italic bright-cyan)"
+renamed = "[ ](italic bright-blue)"
+deleted = "[ ](italic red)"
+untracked = "[ ?](italic white)"
 
 [deno]
-format = " [deno](italic) [󰠱 $version](green bold)"
+format = "[  deno](italic)[ 󰠱 $version](green bold)"
 version_format = "${raw}"
 
 [lua]
-format = "i [lua](italic) [${symbol}${version}]($style)"
+format = "[ 󰢱 lua](bold bright-yellow)[ $version]($style)"
 version_format = "${raw}"
-symbol = "󰢱  "
-style = "bold bright-yellow"
 
 [nodejs]
-format = " 󰎙 [node](italic) [󰠱 ($version)](bold bright-green) "
+format = "[ 󰎙 node](italic)[ 󰠱 $version](bold bright-green)"
 version_format = "${raw}"
 detect_files = ["package-lock.json", "yarn.lock", "package.json", "pnpm-lock.yaml"]
 detect_folders = ["node_modules"]
-detect_extensions = []
 
 [python]
-format = " [py](italic) [${symbol}${version}]($style)"
-symbol = "󰌠 "
+format = "[ 󰌠 py](italic)[ $version](bold bright-yellow)"
 version_format = "${raw}"
-style = "bold bright-yellow"
 
 [ruby]
-format = " [rb](italic) [${symbol}${version}]($style)"
-symbol = "󰴭 "
+format = "[ 󰴭 rb](italic)[ $version](bold red)"
 version_format = "${raw}"
-style = "bold red"
 
 [rust]
-format = " [rs](italic) [$symbol$version]($style)"
-symbol = "󱘗 "
+format = "[ 󱘗 rs](italic)[ $version](bold red)"
 version_format = "${raw}"
-style = "bold red"
 
 [package]
-format = " [pkg](italic dimmed) [$symbol$version]($style)"
+format = "[ 󰏓 pkg](italic dimmed)[ $version](dimmed yellow italic bold)"
 version_format = "${raw}"
-symbol = "󰏓 "
-style = "dimmed yellow italic bold"
 
 [swift]
-format = " [sw](italic) [${symbol}${version}]($style)"
-symbol = "󰛥 "
-style = "bold bright-red"
+format = "[ 󰛥 sw](italic)[ $version](bold bright-red)"
 version_format = "${raw}"
 
 [aws]
 disabled = true
-format = " [aws](italic) [$symbol $profile $region]($style)"
-style = "bold blue"
-symbol = "  "
+format = "[  aws](italic)[ $profile $region](bold blue)"
 
 [buf]
-symbol = "󰕸 "
-format = " [buf](italic) [$symbol $version $buf_version]($style)"
+symbol = "󰕸"
+format = "[ $symbol buf](italic)[ $version]($style)"
 
 [c]
-symbol = "󰙱 "
-format = " [$symbol($version(-$name))]($style)"
+symbol = "󰙱"
+format = "[ $symbol c]($style)[ $version]($style)"
 
 [conda]
-symbol = " "
-format = " conda [$symbol$environment]($style)"
+symbol = ""
+format = "[ $symbol conda]($style)[ $environment]($style)"
 
 [dart]
-symbol = " "
-format = " dart [$symbol($version )]($style)"
+symbol = ""
+format = "[ $symbol dart]($style)[ $version]($style)"
 
 [docker_context]
-symbol = "󰡨 "
-format = " docker [$symbol$context]($style)"
+symbol = "󰡨"
+format = "[ $symbol docker]($style)[ $context]($style)"
 
 [elixir]
-symbol = " "
-format = " exs [$symbol $version OTP $otp_version ]($style)"
+symbol = ""
+format = "[ $symbol elixir]($style)[ $version]($style)"
 
 [elm]
-symbol = " "
-format = " elm [$symbol($version )]($style)"
+symbol = ""
+format = "[ $symbol elm]($style)[ $version]($style)"
 
 [golang]
-symbol = " "
-format = " go [$symbol($version )]($style)"
+symbol = ""
+format = "[ $symbol go]($style)[ $version]($style)"
 
 [haskell]
-symbol = "󰲒 "
-format = " hs [$symbol($version )]($style)"
+symbol = "󰲒"
+format = "[ $symbol haskell]($style)[ $version]($style)"
 
 [java]
-symbol = " "
-format = " java [${symbol}(${version} )]($style)"
+symbol = ""
+format = "[ $symbol java]($style)[ $version]($style)"
 
 [julia]
-symbol = " "
-format = " jl [$symbol($version )]($style)"
+symbol = ""
+format = "[ $symbol julia]($style)[ $version]($style)"
 
 [memory_usage]
 disabled = false
-symbol = "󰍛 "
-format = " mem [${ram}( ${swap})]($style)"
+symbol = "󰍛"
+format = "[ $symbol mem]($style)[ $ram]($style)"
 
 [nim]
-symbol = " "
-format = " nim [$symbol($version )]($style)"
+symbol = ""
+format = "[ $symbol nim]($style)[ $version]($style)"
 
 [nix_shell]
 style = 'bold italic dimmed blue'
-symbol = ' '
-format = '[$symbol nix⎪$state⎪]($style) [$name](italic dimmed white)'
-impure_msg = ' '
-pure_msg = '󰅺 '
-unknown_msg = '󰠗 '
+symbol = ''
+format = '[$symbol nix]($style)[ $state]($style)[ $name](italic dimmed white)'
+impure_msg = ''
+pure_msg = '󰅺'
+unknown_msg = '󰠗'
 
 [spack]
-symbol = "󰌹 "
-format = " spack [$symbol$environment]($style)"
+symbol = "󰌹"
+format = "[ $symbol spack]($style)[ $environment]($style)"
 
 [custom.tmux]
-command = "echo "
+command = "echo -n "
 when = "env | grep -q TMUX"
 format = "[ $output]($style)"
 style = "bold bright-purple"
-
-[custom.git_total_branches]
-command = "git branch -a 2>/dev/null | grep -v HEAD | wc -l | tr -d ' '"
-when = "git rev-parse --git-dir 2>/dev/null"
-format = "[$output]($style)"
-style = "dimmed white"
-
-
+disabled = false
