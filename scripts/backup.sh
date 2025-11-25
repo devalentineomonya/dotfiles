@@ -125,6 +125,10 @@ copy_file "$HOME/.config/monitors.xml" "$BACKUP_DIR/monitors.xml"
 mkdir -p "$BACKUP_DIR/nvim"
 copy_contents "$HOME/.config/nvim" "$BACKUP_DIR/nvim"
 
+# --- Editors ---
+mkdir -p "$BACKUP_DIR/kitty"
+copy_contents "$HOME/.config/kitty" "$BACKUP_DIR/kitty"
+
 # --- VSCode (minimal backup) ---
 mkdir -p "$BACKUP_DIR/vscode"
 copy_file "$HOME/.config/Code/User/settings.json" "$BACKUP_DIR/vscode/settings.json"
