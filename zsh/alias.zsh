@@ -1,5 +1,5 @@
 # ============================================================
-# 📁 Directory Navigation Aliases
+# Directory Navigation Aliases
 # ============================================================
 alias deval='cd ~/Desktop/learningCoding/projects/devalProjects'
 alias other='cd ~/Desktop/learningCoding/otherDevs'
@@ -11,17 +11,19 @@ alias client='cd ~/Desktop/learningCoding/clientsWork/'
 alias csk='cd ~/Desktop/learningCoding/projects/cskWebApp'
 
 # ============================================================
-# 🧰 System Management Aliases
+# System Management Aliases
 # ============================================================
 alias reload='source ~/.zshrc'
 alias cls='clear'
-alias update='sudo apt update && sudo apt upgrade -y'
+alias update='sudo pacman -Syu'
 alias pcds='df -h'
-alias memory='free -m'
-alias runds='ollama run deepseek-r1'
+alias mem='free -m'
+alias vim=nvim
+alias vi="nvim"
+alias v="nvim"
 
 # ============================================================
-# 📂 File Listing Aliases
+# File Listing Aliases
 # ============================================================
 # Use eza if available, otherwise use standard ls with colors
 if command -v eza &> /dev/null; then
@@ -39,7 +41,7 @@ fi
 alias grep='grep --color=auto'
 
 # ============================================================
-# 🧠 Git Aliases
+# Git Aliases
 # ============================================================
 alias gs='git status'
 alias gi='git init'
@@ -60,7 +62,6 @@ alias gar='git remote add origin'
 alias grr='git remote set-url'
 
 # ============================================================
-# 📦 NPM Aliases
 # ============================================================
 alias nps='npm start'
 alias npd='npm run dev'
@@ -70,7 +71,7 @@ alias npb='npm run build'
 alias npl='npm run lint'
 
 # ============================================================
-# 🚀 PNPM Aliases
+#  PNPM Aliases
 # ============================================================
 alias pns='pnpm start'
 alias pnsd='pnpm start:dev'
@@ -85,7 +86,7 @@ alias pnup='pnpm up'
 alias png='pnpm add -g'
 
 # ============================================================
-# ⚡ Bun Aliases
+#  Bun Aliases
 # ============================================================
 alias bns='bun start'
 alias bnd='bun dev'
@@ -97,7 +98,7 @@ alias bnx='bunx'
 alias bnr='bun run'
 
 # ============================================================
-# 🐳 Docker Aliases
+#  Docker Aliases
 # ============================================================
 alias d='docker'
 alias di='docker images'
@@ -113,7 +114,7 @@ alias dprune='docker system prune -a'
 alias ld='lazydocker'
 
 # ============================================================
-# 🐙 Docker Compose Aliases
+#  Docker Compose Aliases
 # ============================================================
 alias dc='docker compose'
 alias dcb='docker compose build'
@@ -130,7 +131,7 @@ alias dcpull='docker compose pull'
 alias dckill='docker compose kill'
 
 # ============================================================
-# ⚓ Helm Aliases
+#  Helm Aliases
 # ============================================================
 alias hi='helm install'
 alias hu='helm upgrade'
@@ -146,7 +147,7 @@ alias hget='helm get all'
 alias hlint='helm lint'
 
 # ============================================================
-# ☸️ Kubernetes (kubectl) Aliases
+#  Kubernetes (kubectl) Aliases
 # ============================================================
 alias k='kubectl'
 alias kg='kubectl get'
