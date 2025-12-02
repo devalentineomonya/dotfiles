@@ -1,4 +1,5 @@
 astro-build.astro-vscode
+asvetliakov.vscode-neovim
 azat-io.eyecons
 bradgashler.htmltagwrap
 bradlc.vscode-tailwindcss
@@ -33,6 +34,8 @@ rangav.vscode-thunder-client
 redhat.java
 redhat.vscode-xml
 ritwickdey.liveserver
+rvest.vs-code-prettier-eslint
+sdras.night-owl
 shd101wyy.markdown-preview-enhanced
 soramanew.caelestia-vscode-integration
 streetsidesoftware.code-spell-checker
@@ -42,6 +45,7 @@ theqtcompany.qt-qml
 theqtcompany.qt-ui
 toba.vsfire
 tyriar.lorem-ipsum
+unifiedjs.vscode-mdx
 usernamehw.errorlens
 visualstudioexptteam.intellicode-api-usage-examples
 visualstudioexptteam.vscodeintellicode

@@ -10,5 +10,6 @@ require("lazy").setup({
     { import = "plugins.lsp" },
     { import = "plugins.cmp" },
     { import = "plugins.tiny-diagnostics" },
+    { import = "plugins.smear_cursor" },
     { "mg979/vim-visual-multi" },
 })

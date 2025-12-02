@@ -74,7 +74,7 @@
   // Language-specific formatters
           "prettier.prettierPath": "/home/d3f4alt/.local/share/pnpm/prettier",
         "[html]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode"
+          "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
         },
         "[css]": {
           "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -89,7 +89,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -170,9 +170,6 @@
   // Explorer
   "explorer.compactFolders": false,
   "explorer.confirmDragAndDrop": false,
-
-  // Breadcrumbs
-  "breadcrumbs.enabled": false,
   "breadcrumbs.filePath": "off",
 
   // Diff Editor
@@ -345,7 +342,8 @@
     "redhat.telemetry.enabled": false,
   "github.copilot.telemetry.enable": false,
   "github.copilot.ebleTelemetry": false,
-  "workbench.colorTheme": "Caelestia"
+  "workbench.colorTheme": "Caelestia",
+  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
 
 
 }
