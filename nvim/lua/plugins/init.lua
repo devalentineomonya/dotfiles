@@ -11,5 +11,9 @@ require("lazy").setup({
     { import = "plugins.cmp" },
     { import = "plugins.tiny-diagnostics" },
     { import = "plugins.smear_cursor" },
+    { import = "plugins.trouble" },
+    { import = "plugins.spectre" },
+    { import = "plugins.mason" },
+    { import = "plugins.mason-tools" },
     { "mg979/vim-visual-multi" },
 })

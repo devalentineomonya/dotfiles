@@ -72,13 +72,13 @@
   "editor.formatOnPaste": true,
 
   // Language-specific formatters
-          "prettier.prettierPath": "/home/d3f4alt/.local/share/pnpm/prettier",
-        "[html]": {
-          "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-        },
-        "[css]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode"
-        },
+  "prettier.prettierPath": "/home/d3f4alt/.local/share/pnpm/prettier",
+  "[html]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -314,7 +314,6 @@
   "github.copilot.nextEditSuggestions.enabled": true,
   "chat.commandCenter.enabled": false,
   "workbench.editor.editorActionsLocation": "hidden",
-  "editor.minimap.enabled": false,
   "window.menuBarVisibility": "compact",
   "[java]": {
     "editor.defaultFormatter": "redhat.java"
@@ -339,11 +338,11 @@
   "update.showReleaseNotes": false,
   "chat.emptyChatState.enabled": false,
   "github.copilot.chat.languageContext.fix.typescript.enabled": true,
-    "redhat.telemetry.enabled": false,
+  "redhat.telemetry.enabled": false,
   "github.copilot.telemetry.enable": false,
   "github.copilot.ebleTelemetry": false,
   "workbench.colorTheme": "Caelestia",
-  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
-
-
+  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.enabled": false
 }

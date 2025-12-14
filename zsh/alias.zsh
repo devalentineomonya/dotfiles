@@ -189,4 +189,3 @@ alias kcp='kubectl cp'
 # Other Prgrams
 # ======================================================
 alias vlc="flatpak run org.videolan.VLC $1 &"
-

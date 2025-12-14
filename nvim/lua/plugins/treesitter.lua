@@ -20,6 +20,8 @@ return {
                 "json",
                 "go",
                 "markdown",
+                "c",
+                "java"
             },
 
             highlight = { enable = true },
