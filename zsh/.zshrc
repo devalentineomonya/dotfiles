@@ -68,7 +68,9 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.bun/bin:$PATH"
 export PATH="$HOME/.local/share/pnpm:$PATH"
 export PATH="$HOME/.spicetify:$PATH"
-
+export ANDROID_HOME=/opt/android-sdk
+export PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/34.0.0   
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin   
 
 # ============================================================
 # 🔧 Tool Integrations
@@ -207,17 +209,6 @@ fi
 if [[ $- == *i* ]]; then
     show_greeting
 fi
- 
-export PNPM_HOME="/home/d3f4alt/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-
-
-[ -s "/home/d3f4alt/.bun/_bun" ] && source "/home/d3f4alt/.bun/_bun"
-
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  
@@ -227,3 +218,18 @@ bindkey "^[[D" backward-char
 bindkey "^[[C" forward-char
 bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5C" forward-word   
+
+# pnpm
+export PNPM_HOME="/home/d3f4alt/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/d3f4alt/.local/bin:$PATH"
+
+# opencode
+export PATH=/home/d3f4alt/.opencode/bin:$PATH

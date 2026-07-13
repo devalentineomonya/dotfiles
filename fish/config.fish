@@ -68,3 +68,7 @@ if status is-interactive
         cat ~/.local/state/caelestia/sequences.txt
     end
 end
+
+
+# Added by Antigravity CLI installer
+set -gx PATH "/home/d3f4alt/.local/bin" $PATH

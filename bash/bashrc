@@ -321,3 +321,8 @@ if [ -d ~/.config/bash ]; then
         [ -r "$file" ] && source "$file"
     done
 fi
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/d3f4alt/.local/bin:$PATH"
+. "$HOME/.cargo/env"

@@ -1,21 +1,8 @@
 # ============================================================
-# Directory Navigation Aliases
-# ============================================================
-alias deval='cd ~/Desktop/learningCoding/projects/devalProjects'
-alias other='cd ~/Desktop/learningCoding/otherDevs'
-alias hackathon='cd ~/Desktop/learningCoding/hackathon'
-alias intern='cd ~/Desktop/learningCoding/attachmentsAndInternships'
-alias projects='cd ~/Desktop/learningCoding/projects'
-alias learn='cd ~/Desktop/learningCoding/learning'
-alias client='cd ~/Desktop/learningCoding/clientsWork/'
-alias csk='cd ~/Desktop/learningCoding/projects/cskWebApp'
-
-# ============================================================
 # System Management Aliases
 # ============================================================
 alias reload='source ~/.zshrc'
 alias cls='clear'
-alias update='sudo pacman -Syu'
 alias pcds='df -h'
 alias mem='free -m'
 alias vim=nvim
@@ -184,8 +171,3 @@ alias kedit='kubectl edit'
 alias kcnl='kubectl config set-context --current --namespace='
 alias knsc='kubectl create namespace'
 alias kcp='kubectl cp'
-
-# =======================================================
-# Other Prgrams
-# ======================================================
-alias vlc="flatpak run org.videolan.VLC $1 &"

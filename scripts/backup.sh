@@ -5,7 +5,7 @@
 cd ~ || exit
 
 # --- Backup destination ---
-BACKUP_DIR="$HOME/Desktop/learningCoding/configurations"
+BACKUP_DIR="$HOME/workspace/configurations"
 mkdir -p "$BACKUP_DIR"
 
 echo "Cleaning old backups..."

@@ -1,6 +1,6 @@
 {
   "editor.renderWhitespace": "trailing",
-  "workbench.iconTheme": "eyecons",
+  "workbench.iconTheme": "material-icon-theme",
   "workbench.sideBar.location": "right",
   "workbench.editor.enablePreview": false,
   "workbench.editor.showTabs": "none",
@@ -56,7 +56,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always",
     "source.organizeImports": "always",
-    "source.removeUnusedImports": "always"
+    "source.removeUnusedImports": "always",
   },
 
   // ESLint Configuration
@@ -64,7 +64,7 @@
     "javascript",
     "typescript",
     "javascriptreact",
-    "typescriptreact"
+    "typescriptreact",
   ],
   "eslint.onIgnoredFiles": "warn",
   "eslint.format.enable": true,
@@ -74,28 +74,28 @@
   // Language-specific formatters
   "prettier.prettierPath": "/home/d3f4alt/.local/share/pnpm/prettier",
   "[html]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
   },
   "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[javascriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
 
   "[dart]": {
@@ -104,10 +104,10 @@
     "editor.rulers": [80],
     "editor.selectionHighlight": false,
     "editor.tabCompletion": "onlySnippets",
-    "editor.wordBasedSuggestions": "off"
+    "editor.wordBasedSuggestions": "off",
   },
   "[github-actions-workflow]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
 
   // TypeScript & JavaScript
@@ -136,12 +136,12 @@
   "terminal.integrated.profiles.linux": {
     "zsh": {
       "path": "/bin/zsh",
-      "icon": "terminal-bash"
+      "icon": "terminal-bash",
     },
     "bash": {
       "path": "/bin/bash",
-      "icon": "terminal-bash"
-    }
+      "icon": "terminal-bash",
+    },
   },
 
   // Git
@@ -164,7 +164,7 @@
   "emmet.triggerExpansionOnTab": true,
   "emmet.includeLanguages": {
     "javascript": "javascriptreact",
-    "ejs": "html"
+    "ejs": "html",
   },
 
   // Explorer
@@ -182,8 +182,8 @@
 
   "remote.portsAttributes": {
     "5173": {
-      "protocol": "https"
-    }
+      "protocol": "https",
+    },
   },
 
   // GitLens
@@ -196,13 +196,13 @@
   // GitHub Copilot
   "github.copilot.advanced": {
     "useLanguageServer": true,
-    "enableAutoCompletions": true
+    "enableAutoCompletions": true,
   },
   "github.copilot.enable": {
     "*": false,
     "plaintext": false,
     "markdown": false,
-    "scminput": false
+    "scminput": false,
   },
 
   // SVG
@@ -213,16 +213,16 @@
     "**/node_modules": true,
     "**/dist": true,
     "**/.next": true,
-    "**/.git": true
+    "**/.git": true,
   },
   "files.exclude": {
     "**/.git": true,
-    "**/.next": true
+    "**/.next": true,
   },
 
   "extensions.experimental.affinity": {
     "vscodevim.vim": 1,
-    "asvetliakov.vscode-neovim": 1
+    "asvetliakov.vscode-neovim": 1,
   },
   "extensions.ignoreRecommendations": true,
 
@@ -232,14 +232,14 @@
     "frame": false,
     "trafficLightPosition": {
       "x": 12,
-      "y": 10
+      "y": 10,
     },
     "titleBarOverlay": {
       "color": "#2b2b2b",
       "symbolColor": "#ffffff",
-      "height": 24
+      "height": 24,
     },
-    "chat.commandCenter.enabled": false
+    "chat.commandCenter.enabled": false,
   },
   "custom-ui-style.stylesheet": {
     ".notification-toast": "box-shadow: none !important",
@@ -266,7 +266,7 @@
     ".title .monaco-icon-label:after": "margin-right: 0",
     ".monaco-workbench .part.editor > .content .editor-group-container > .title > .label-container > .title-label": "padding-left: 60px",
     ".title .monaco-icon-label.file-icon": "margin: 0 60px",
-    ".monaco-editor .cursors-layer .cursor": "background-image: linear-gradient(135deg, #ffaffc 10%, #DA70D6 100%)"
+    ".monaco-editor .cursors-layer .cursor": "background-image: linear-gradient(135deg, #ffaffc 10%, #DA70D6 100%)",
   },
 
   // Color Customizations
@@ -287,8 +287,8 @@
     "editorOverviewRuler.border": "#0000",
     "[Aura Dracula Spirit (Soft)]": {
       "editorSuggestWidget.selectedBackground": "#3A334B",
-      "sideBar.background": "#191521"
-    }
+      "sideBar.background": "#191521",
+    },
   },
 
   // Token Color Customizations
@@ -297,10 +297,10 @@
       {
         "scope": "comment",
         "settings": {
-          "fontStyle": "italic"
-        }
-      }
-    ]
+          "fontStyle": "italic",
+        },
+      },
+    ],
   },
 
   // Miscellaneous
@@ -314,26 +314,25 @@
   "github.copilot.nextEditSuggestions.enabled": true,
   "chat.commandCenter.enabled": false,
   "workbench.editor.editorActionsLocation": "hidden",
-  "window.menuBarVisibility": "compact",
   "[java]": {
-    "editor.defaultFormatter": "redhat.java"
+    "editor.defaultFormatter": "redhat.java",
   },
   "[dockercompose]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "qt-core.additionalQtPaths": [
     {
       "name": "Qt-5.15.17-linux-g++_from_PATH",
-      "path": "/usr/bin/qtpaths"
+      "path": "/usr/bin/qtpaths",
     },
     {
       "name": "Qt-5.15.17-linux-g++_from_PATH",
-      "path": "/usr/bin/qmake"
-    }
+      "path": "/usr/bin/qmake",
+    },
   ],
   "python.analysis.typeCheckingMode": "standard",
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "ms-python.black-formatter",
   },
   "update.showReleaseNotes": false,
   "chat.emptyChatState.enabled": false,
@@ -341,8 +340,17 @@
   "redhat.telemetry.enabled": false,
   "github.copilot.telemetry.enable": false,
   "github.copilot.ebleTelemetry": false,
-  "workbench.colorTheme": "Caelestia",
+  "workbench.colorTheme": "Night Owl",
   "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
   "editor.minimap.renderCharacters": false,
-  "editor.minimap.enabled": false
+  "editor.minimap.enabled": false,
+  "workbench.editorAssociations": {
+    "*.copilotmd": "vscode.markdown.preview.editor",
+    "{git,gitlens,chat-editing-snapshot-text-model,copilot,git-graph,git-graph-3}:/**/*.qrc": "default",
+    "{git,gitlens,chat-editing-snapshot-text-model,copilot,git-graph,git-graph-3}:/**/*.ui": "default",
+    "*.qrc": "qt-core.qrcEditor",
+  },
+  "workbench.browser.showInTitleBar": false,
+  "chat.titleBar.openInAgentsWindow.enabled": false,
+  "window.menuBarVisibility": "compact",
 }
