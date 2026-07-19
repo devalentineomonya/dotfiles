@@ -2,10 +2,12 @@ astro-build.astro-vscode
 azat-io.eyecons
 bradgashler.htmltagwrap
 bradlc.vscode-tailwindcss
+bruno-api-client.bruno
 dbaeumer.vscode-eslint
 docker.docker
 dsznajder.es7-react-js-snippets
 eamodio.gitlens
+enkia.tokyo-night
 esbenp.prettier-vscode
 felgo.felgo
 fireblast.hyprlang-vscode
@@ -28,12 +30,12 @@ ms-python.vscode-python-envs
 ms-vsliveshare.vsliveshare
 pkief.material-icon-theme
 prisma.prisma
-rangav.vscode-thunder-client
 redhat.java
 redhat.vscode-xml
 rvest.vs-code-prettier-eslint
 sdras.night-owl
 shd101wyy.markdown-preview-enhanced
+soramanew.caelestia-vscode-integration
 subframe7536.custom-ui-style
 theqtcompany.qt-core
 theqtcompany.qt-qml
@@ -41,7 +43,6 @@ theqtcompany.qt-ui
 toba.vsfire
 tyriar.lorem-ipsum
 usernamehw.errorlens
-visualstudioexptteam.intellicode-api-usage-examples
 vitaliymaz.vscode-svg-previewer
 vscjava.migrate-java-to-azure
 vscjava.vscode-gradle
@@ -49,7 +50,6 @@ vscjava.vscode-java-debug
 vscjava.vscode-java-dependency
 vscjava.vscode-java-pack
 vscjava.vscode-java-test
-vscjava.vscode-java-upgrade
 vscjava.vscode-maven
 wakatime.vscode-wakatime
 wix.vscode-import-cost

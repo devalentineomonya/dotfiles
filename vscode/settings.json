@@ -1,6 +1,6 @@
 {
   "editor.renderWhitespace": "trailing",
-  "workbench.iconTheme": "material-icon-theme",
+  "workbench.iconTheme": "eyecons",
   "workbench.sideBar.location": "right",
   "workbench.editor.enablePreview": false,
   "workbench.editor.showTabs": "none",
@@ -340,7 +340,7 @@
   "redhat.telemetry.enabled": false,
   "github.copilot.telemetry.enable": false,
   "github.copilot.ebleTelemetry": false,
-  "workbench.colorTheme": "Night Owl",
+  "workbench.colorTheme": "Caelestia",
   "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
   "editor.minimap.renderCharacters": false,
   "editor.minimap.enabled": false,
